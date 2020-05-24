@@ -1,7 +1,7 @@
 <template>
     <div @mouseleave="input_clicked = false">
-        <div>
-            <div>
+        <div id="container_search_input_result_box">
+            <div id="search_container_elements">
                 <input id="input_field" type="text" placeholder="Trouvez votre Moto Ecole" @click="input_clicked = true">
                 <i><img src="" alt="localisation"></i>
                 <button id="search_button">Rechercher</button>
@@ -47,6 +47,9 @@ export default {
     visibility: visible;
     height: 300px;
     width: 100%;
+}
+#search_container_elements{
+    margin-bottom: 20px;
 }
 .close_panel_result{
     transition: 0.1s;
