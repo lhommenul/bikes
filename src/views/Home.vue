@@ -10,7 +10,7 @@
 
 <script>
 // @ is an alias to /src
-import BikesStore from '../components/bike_stores/BikeStore.vue'
+import BikesStore from '../components/agence_stores/AgenceStore.vue'
 import SearchLearn from '../components/learn_bike/Search.vue'
 
 export default {
