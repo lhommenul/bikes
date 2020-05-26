@@ -5,9 +5,10 @@
             <button class="button_add_option">Ajouter un Professeur</button>
         </div>
         <div class="container_tiles_date">
-            <div iv class="tile_date" v-for="day in nb_days" :key="day.id">
+            <div v-show="tile.selected == false" @click="tile.selected = true, tile.date.year = year, tile.date.month = monthConverter(), tile.date.day = day" :class="{tile_date_after: day > today, tile_date_today: day == today, tile_date_past: day < today}" v-for="day in total_nb_days" :key="day.id">
                 {{day}}
-                <button class="add_event" @click="add_event.displayed = true">Ajouter</button>
+                {{monthConverter()}}
+                {{year}}
             </div>    
         </div>    
         <div :class="{closed_menu : add_event.displayed == false, opened_menu : add_event.displayed == true}">
@@ -34,6 +35,33 @@
                 </div>
             </div>
         </div>
+        <!-- Day -->
+        <div v-show="tile.selected">
+            <button @click="tile.selected = false">Retour</button>         
+            {{tile.date.day}}
+            {{tile.date.month}}
+            {{tile.date.year}}
+            <div class="container_elements_tiles_day">
+                <div>
+                    <div class="hour_tile_day" v-for="item in 24" :key="item.id">
+                        {{ 0+item+'H00' }}
+                    </div>     
+                </div>
+                <div class="column">
+                    <div @click="add_event.displayed = true" class="hour_tile_day" v-for="item in 24" :key="item.id">
+                        {{ item }}
+                    </div>                     
+                </div>                 
+                <div class="column">
+                    <div @click="add_event.displayed = true" class="hour_tile_day" v-for="item in 24" :key="item.id">
+                        {{ item }}
+                    </div>                     
+                </div>       
+                <!-- Event Creator -->
+                <div id="event_creator_container">
+                </div>           
+            </div>
+        </div>
     </div>
 </template>
 
@@ -42,10 +70,21 @@ export default {
     data(){
         return{
             data:{
-                nb_days:0,
+                total_nb_days:Number,
+                today:Number,
+                month:String,
+                year:String
+            },
+            tile:{
+                selected:false,
+                date:{
+                    day:String,
+                    month:String,
+                    year:Number
+                }
             },
             add_event:{
-                displayed:true
+                displayed:false
             },
             starting_data_point:''
         }
@@ -54,8 +93,11 @@ export default {
         var actual = new Date()
         const month = actual.getMonth();
         var here = new Date(actual.getFullYear(),month,0)
-        const number_of_days = here.getDate()
-        this.nb_days = number_of_days            
+        this.total_nb_days = here.getDate()+1;
+        this.today = actual.getDate()
+        this.month = actual.getMonth()
+        this.year = actual.getFullYear()
+        console.log(this.today);        
     },
     methods:{
         createEvent(event_name){
@@ -79,19 +121,79 @@ export default {
 
                 break;
             }
-        }
+        },
+        monthConverter(){
+            switch (this.month) {
+                case 0:                    
+                    return 'janvier'
+                case 1:                    
+                    return 'fevrier'
+                case 2:                    
+                    return 'mars'
+                case 3:                    
+                    return 'avril'                                                    
+                case 4:
+                    return 'mai'                    
+                case 5:                    
+                    return 'juin'
+                case 6:                    
+                    return 'juillet'                    
+                case 7:                    
+                    return 'août'
+                case 8:                    
+                    return 'septembre'
+                case 9:                    
+                    return 'octobre'
+                case 10:                    
+                    return 'novembre'                                                    
+                case 11:                    
+                    return 'décembre'
+                default:
+                    console.error('Error while founding month');                    
+                    break;
+            }
+            return 
+        },
     },
 }
 </script>
 
 <style scoped>
+.row{
+    display: flex;
+    flex-direction: row;
+}
+#test_split{
+    height: 600px;
+    background-color: whitesmoke;
+    width: 200px;
+}
+#event_creator_container{
+    display: flex;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
 .container_tiles_date{
     height: 300px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
-.tile_date{
+.container_elements_tiles_day{
+    display: flex;
+    flex-direction: row;
+}
+.hour_tile_day{
+    width: 200px;
+    background-color: whitesmoke;
+    padding: 5px;
+    height: 25px;
+    font-size: 18px;
+    border: solid 0.5px grey;
+}
+.tile_date_after, .tile_date_today, .tile_date_past{
     min-height: 80px;
     height: auto;
     width: 60px;
@@ -101,6 +203,16 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.scale_up{
+    height: 400px;
+}
+.tile_date_past{
+    background-color: grey;
+}
+.tile_date_today{
+    background-color: red;
+    color: white;
 }
 .close_add_event_btn{
     font-size: 20px;
@@ -153,6 +265,11 @@ export default {
     cursor: pointer;
 }
 .closed_menu{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
     visibility: hidden;
 }
 .opened_menu{
