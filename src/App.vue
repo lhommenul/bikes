@@ -1,19 +1,21 @@
 <template>
-  <div id="app">
-    <div>
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> |
-        <router-link to="/user">User</router-link> |
-        <router-link to="/agence">Agence</router-link> |
-        <router-link to="/myagence">MyAgence</router-link>
-      </div>
+  <v-app>
+    <div id="app">
       <div>
-        <ConnectionCreate/>
+        <div id="nav">
+          <router-link to="/">Home</router-link> |
+          <router-link to="/about">About</router-link> |
+          <router-link to="/user">User</router-link> |
+          <router-link to="/agence">Agence</router-link> |
+          <router-link to="/myagence">MyAgence</router-link>
+        </div>
+        <div>
+          <ConnectionCreate/>
+        </div>
       </div>
+      <router-view/>
     </div>
-    <router-view/>
-  </div>
+  </v-app>
 </template>
 
 <script>

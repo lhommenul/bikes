@@ -1,67 +1,65 @@
 <template>
     <div class="planing_element_container_main">
         <div>
-            <button class="button_add_option">Ajouter un Eleve</button>
+            <button class="button_add_option" @click="add_student = true">Ajouter un Eleve</button>
             <button class="button_add_option">Ajouter un Professeur</button>
         </div>
-        <div class="container_tiles_date">
-            <div v-show="tile.selected == false" @click="tile.selected = true, tile.date.year = year, tile.date.month = monthConverter(), tile.date.day = day" :class="{tile_date_after: day > today, tile_date_today: day == today, tile_date_past: day < today}" v-for="day in total_nb_days" :key="day.id">
-                {{day}}
-                {{monthConverter()}}
-                {{year}}
-            </div>    
-        </div>    
-        <div :class="{closed_menu : add_event.displayed == false, opened_menu : add_event.displayed == true}">
-            <button class="close_add_event_btn" @click="add_event.displayed = false">x</button>
-            <div class="container_information">
-                <h1>Date</h1>
-                <div id="step_1">
-                    <label for="">
-                        <h3>Type d'évènement : </h3>
-                        <button class="style_button_open_close_list">Events</button>
-                    </label>
-                    <div>
-                        <ul>
-                            <li class="option_selection" @click="createEvent('lmoto')">Leçon de Moto</li>
-                            <li class="option_selection" @click="createEvent('lvoiture')">Leçon de Voiture</li>
-                            <li class="option_selection" @click="createEvent('lscooter')">Leçon de Scooter</li>
-                            <li class="option_selection" @click="createEvent('lpoidslourds')">Leçon de Poids Lourds</li>
-                            <li class="option_selection" @click="createEvent('autre')">Autre</li>
-                        </ul>
-                    </div>
-                </div>
-                <div id="step_2">
-
-                </div>
+        <!-- Dialog -->
+        <v-dialog v-model="add_student" overlay-color="white" persistent=true>
+            <v-btn @click="add_student = false" color="red"><h3>Fermer</h3></v-btn>
+            <v-card>
+                <v-card-title primary-title>
+                    <h2>Ajouter un élève</h2>
+                </v-card-title>
+                <v-card-text>
+                    <v-form>
+                        <v-text-field
+                            :counter="100"
+                            label="Prénom"
+                            required
+                        ></v-text-field>
+                        <v-text-field
+                            :counter="100"
+                            label="Nom"
+                            required
+                        ></v-text-field>
+                        <v-text-field
+                            :counter="100"
+                            label="Adresse Email"
+                            required
+                        ></v-text-field>                        
+                        <v-overflow-btn
+                            class="my-2"
+                            :items="dropdown_edit"
+                            label="Sexe"
+                            counter
+                            item-value="text"
+                        ></v-overflow-btn>                       
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+        <v-calendar
+            :events="events"
+            :now="today"
+            :value="today"    
+            @click:date="daily_calendar = true, daily_calendar_payload = $event"
+        ></v-calendar>
+        <v-calendar-daily
+            v-if="daily_calendar"
+            :events="events"
+            :now="daily_calendar_payload.date"
+        >
+         <template v-slot:interval="{ hour }">
+            <div
+              class="text-center"
+            >
+              <h1>{{displayEventDay(hour)}}</h1>
             </div>
-        </div>
-        <!-- Day -->
-        <div v-show="tile.selected">
-            <button @click="tile.selected = false">Retour</button>         
-            {{tile.date.day}}
-            {{tile.date.month}}
-            {{tile.date.year}}
-            <div class="container_elements_tiles_day">
-                <div>
-                    <div class="hour_tile_day" v-for="item in 24" :key="item.id">
-                        {{ 0+item+'H00' }}
-                    </div>     
-                </div>
-                <div class="column">
-                    <div @click="add_event.displayed = true" class="hour_tile_day" v-for="item in 24" :key="item.id">
-                        {{ item }}
-                    </div>                     
-                </div>                 
-                <div class="column">
-                    <div @click="add_event.displayed = true" class="hour_tile_day" v-for="item in 24" :key="item.id">
-                        {{ item }}
-                    </div>                     
-                </div>       
-                <!-- Event Creator -->
-                <div id="event_creator_container">
-                </div>           
-            </div>
-        </div>
+          </template>
+        </v-calendar-daily>
+        <div class="close_fen" v-if="daily_calendar" @click="daily_calendar = false">Fermer La Fenetre</div>
+        <v-btn height="60px" v-if="daily_calendar" id="floating_add_button_event">+</v-btn>
     </div>
 </template>
 
@@ -69,35 +67,47 @@
 export default {
     data(){
         return{
-            data:{
-                total_nb_days:Number,
-                today:Number,
-                month:String,
-                year:String
-            },
-            tile:{
-                selected:false,
-                date:{
-                    day:String,
-                    month:String,
-                    year:Number
-                }
-            },
-            add_event:{
-                displayed:false
-            },
-            starting_data_point:''
+            today: '2020-05-28 09:00',
+            events: [
+                {
+                name: 'Weekly Meeting',
+                start: '2020-05-27 09:00',
+                end: '2020-05-27 10:00',
+                },
+                {
+                name: 'Thomas\' Birthday',
+                start: '2019-01-10',
+                },
+                {
+                name: 'Mash Potatoes',
+                start: '2019-01-09 12:30',
+                end: '2019-01-09 15:30',
+                },
+            ],
+            day_events: [
+                {
+                name: 'Weekly Meeting',
+                start: '2020-05-27 09:00',
+                end: '2020-05-27 10:00',
+                },
+                {
+                name: 'Thomas\' Birthday',
+                start: '2019-01-10',
+                },
+                {
+                name: 'Mash Potatoes',
+                start: '2019-01-09 12:30',
+                end: '2019-01-09 15:30',
+                },
+            ],
+            daily_calendar:false,
+            daily_calendar_payload:null,
+            add_student:false,
+            dropdown_edit: [
+                { text: 'homme' },
+                { text: 'femme' },
+            ],            
         }
-    },
-    beforeCreate(){
-        var actual = new Date()
-        const month = actual.getMonth();
-        var here = new Date(actual.getFullYear(),month,0)
-        this.total_nb_days = here.getDate()+1;
-        this.today = actual.getDate()
-        this.month = actual.getMonth()
-        this.year = actual.getFullYear()
-        console.log(this.today);        
     },
     methods:{
         createEvent(event_name){
@@ -154,11 +164,42 @@ export default {
             }
             return 
         },
+        displayEventDay(){
+           
+            return this.daily_calendar_payload.date
+        },
+        addEventInTheDay(){
+            console.log('addEventInTheDay')
+        }
     },
 }
 </script>
 
 <style scoped>
+textarea{
+    border-style: none;
+    background-color: whitesmoke;
+    color: black;
+    border-radius: 15px;
+}
+.close_fen{
+    width: 100%;
+    background-color: red;
+    color: white;
+    font-size: 25px;
+    padding: 5px;
+    margin: 10px;
+    cursor: pointer;
+}
+#floating_add_button_event{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    font-size: 24px;
+    background-color: pink;
+    color: white;
+}
 .row{
     display: flex;
     flex-direction: row;

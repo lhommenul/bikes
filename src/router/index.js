@@ -11,6 +11,30 @@ Vue.use(VueRouter)
     component: Home
   },
   {
+    path: '/connexion',
+    name: 'Connection',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Connexion.vue')
+  },
+  {
+    path: '/config_account',
+    name: 'ConfigurationCompte',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AccountConfig.vue')
+  },
+  {
+    path: '/create_account',
+    name: 'CreateAccount',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/CreateAccount.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
