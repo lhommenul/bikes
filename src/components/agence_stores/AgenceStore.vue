@@ -19,7 +19,12 @@
 
 export default {
     props:{
-        posi:Boolean
+        posi:Boolean,
+        agency:{
+          name:String,
+          rating:Number,
+          
+        }
     },
     components: {
 

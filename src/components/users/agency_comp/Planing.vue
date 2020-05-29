@@ -2,43 +2,12 @@
     <div class="planing_element_container_main">
         <div>
             <button class="button_add_option" @click="add_student = true">Ajouter un Eleve</button>
-            <button class="button_add_option">Ajouter un Professeur</button>
+            <button class="button_add_option" @click="add_teacher = true">Ajouter un Professeur</button>
         </div>
         <!-- Dialog -->
-        <v-dialog v-model="add_student" overlay-color="white" persistent=true>
-            <v-btn @click="add_student = false" color="red"><h3>Fermer</h3></v-btn>
-            <v-card>
-                <v-card-title primary-title>
-                    <h2>Ajouter un élève</h2>
-                </v-card-title>
-                <v-card-text>
-                    <v-form>
-                        <v-text-field
-                            :counter="100"
-                            label="Prénom"
-                            required
-                        ></v-text-field>
-                        <v-text-field
-                            :counter="100"
-                            label="Nom"
-                            required
-                        ></v-text-field>
-                        <v-text-field
-                            :counter="100"
-                            label="Adresse Email"
-                            required
-                        ></v-text-field>                        
-                        <v-overflow-btn
-                            class="my-2"
-                            :items="dropdown_edit"
-                            label="Sexe"
-                            counter
-                            item-value="text"
-                        ></v-overflow-btn>                       
-                    </v-form>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+        <!-- Ajouter un Eleve -->
+        <AddStudent  @closeStudentWindow="add_student = false" :add_student="add_student" />
+        <AddMonitor @closeTeacherWindow="add_teacher = false" :add_teacher="add_teacher"/>
         <v-calendar
             :events="events"
             :now="today"
@@ -64,6 +33,8 @@
 </template>
 
 <script>
+import AddStudent from './AddStudent'
+import AddMonitor from './AddMonitor'
 export default {
     data(){
         return{
@@ -102,76 +73,22 @@ export default {
             ],
             daily_calendar:false,
             daily_calendar_payload:null,
-            add_student:false,
-            dropdown_edit: [
-                { text: 'homme' },
-                { text: 'femme' },
-            ],            
+            add_student:false,      
+            add_teacher:false,
         }
     },
     methods:{
-        createEvent(event_name){
-            switch (event_name) {
-                case 'lmoto':
-
-                break;
-                case 'lvoiture':
-
-                break;
-                case 'lscooter':
-
-                break;
-                case 'lpoidslourds':
-
-                break;
-                case 'autre':
-
-                break;
-                default:
-
-                break;
-            }
-        },
-        monthConverter(){
-            switch (this.month) {
-                case 0:                    
-                    return 'janvier'
-                case 1:                    
-                    return 'fevrier'
-                case 2:                    
-                    return 'mars'
-                case 3:                    
-                    return 'avril'                                                    
-                case 4:
-                    return 'mai'                    
-                case 5:                    
-                    return 'juin'
-                case 6:                    
-                    return 'juillet'                    
-                case 7:                    
-                    return 'août'
-                case 8:                    
-                    return 'septembre'
-                case 9:                    
-                    return 'octobre'
-                case 10:                    
-                    return 'novembre'                                                    
-                case 11:                    
-                    return 'décembre'
-                default:
-                    console.error('Error while founding month');                    
-                    break;
-            }
-            return 
-        },
-        displayEventDay(){
-           
+        displayEventDay(){           
             return this.daily_calendar_payload.date
         },
         addEventInTheDay(){
             console.log('addEventInTheDay')
-        }
+        },
     },
+    components:{
+        AddStudent,
+        AddMonitor
+    }
 }
 </script>
 
