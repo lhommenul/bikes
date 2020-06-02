@@ -81,57 +81,77 @@
                             <v-chip-group active-class="selected_sub" multiple>
                                 <!-- LUNDI -->
                                 <v-col>
-                                    <v-chip @click="days.lundi.open = !days.lundi.open, days.selected = 'lundi'">Lundi</v-chip>
+                                    <v-chip @click="days.lundi.open = !days.lundi.open, days.selected = 'lundi', days.lundi.open_dial = !days.lundi.open_dial">Lundi</v-chip>
                                         <v-row v-if="days.lundi.open">
-                                            <v-chip close>text</v-chip>
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.lundi.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>
                                         </v-row>                                    
                                 </v-col>
                                 <!-- MARDI -->
                                 <v-col>
-                                    <v-chip @click="days.mardi.open = !days.mardi.open, days.selected = 'mardi'">Mardi</v-chip>
+                                    <v-chip @click="days.mardi.open = !days.mardi.open, days.selected = 'mardi', days.mardi.open_dial = !days.mardi.open_dial">Mardi</v-chip>
                                         <v-row v-if="days.mardi.open">
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.mardi.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>                                            
                                         </v-row>                                      
                                 </v-col>       
                                 <!-- MERCREDI -->                   
                                 <v-col>
-                                    <v-chip @click="days.mercredi.open = !days.mercredi.open, days.selected = 'mercredi'">Mercredi</v-chip>
+                                    <v-chip @click="days.mercredi.open = !days.mercredi.open, days.selected = 'mercredi', days.mercredi.open_dial = !days.mercredi.open_dial">Mercredi</v-chip>
                                         <v-row v-if="days.mercredi.open">
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.mercredi.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>                                            
                                         </v-row>                                         
                                 </v-col>    
                                 <!-- JEUDI -->                   
                                 <v-col>
-                                    <v-chip @click="days.jeudi.open = !days.jeudi.open, days.selected = 'jeudi'">Jeudi</v-chip>
+                                    <v-chip @click="days.jeudi.open = !days.jeudi.open, days.selected = 'jeudi', days.jeudi.open_dial = !days.jeudi.open_dial">Jeudi</v-chip>
                                         <v-row v-if="days.jeudi.open">
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.jeudi.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>                                            
                                         </v-row>                                             
                                 </v-col>      
                                 <!-- VENDREDI -->             
                                 <v-col>
-                                    <v-chip @click="days.vendredi.open = !days.vendredi.open, days.selected = 'vendredi'">Vendredi</v-chip>
+                                    <v-chip @click="days.vendredi.open = !days.vendredi.open, days.selected = 'vendredi', days.vendredi.open_dial = !days.vendredi.open_dial">Vendredi</v-chip>
                                         <v-row v-if="days.vendredi.open">
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.vendredi.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>                                            
                                         </v-row>        
                                 </v-col>       
                                 <!-- SAMEDI -->                 
                                 <v-col>
-                                    <v-chip @click="days.samedi.open = !days.samedi.open, days.selected = 'samedi'">Samedi</v-chip>
+                                    <v-chip @click="days.samedi.open = !days.samedi.open, days.selected = 'samedi', days.samedi.open_dial = !days.samedi.open_dial">Samedi</v-chip>
                                         <v-row v-if="days.samedi.open">
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.samedi.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>                                            
                                         </v-row>                                            
                                 </v-col>     
                                 <!-- DIMANCHE -->               
                                 <v-col>
-                                    <v-chip @click="days.dimanche.open = !days.dimanche.open, days.selected = 'dimanche'">Dimanche</v-chip>
+                                    <v-chip @click="days.dimanche.open = !days.dimanche.open, days.selected = 'dimanche', days.dimanche.open_dial = !days.dimanche.open_dial">Dimanche</v-chip>
                                         <v-row v-if="days.dimanche.open">
-                                            <v-chip close>text</v-chip>
+                                            <v-chip close v-for="item in days.dimanche.hours" :key="item.id">
+                                                {{ item.open }} \\
+                                                {{ item.close }}
+                                            </v-chip>                                            
                                         </v-row>                                   
                                 </v-col>                             
                             </v-chip-group>    
                                 <!-- Time Picker -->
-                                <v-container>
+                                <v-container v-if="days.lundi.open_dial == true | days.mardi.open_dial == true | days.mercredi.open_dial == true | days.jeudi.open_dial == true | days.vendredi.open_dial == true | days.samedi.open_dial == true | days.dimanche.open_dial == true">
                                     <v-time-picker
                                         :format="'24hr'"
                                         id="time_picker_days_open"
@@ -149,7 +169,7 @@
                                     <h3>Fermeture</h3>
                                     </v-time-picker>         
                                     <v-container>
-                                        <v-btn>Ajouter Horaire</v-btn>
+                                        <v-btn @click="checkDial">Ajouter Horaire</v-btn>
                                     </v-container>                           
                                 </v-container>                            
                         </v-container>
@@ -177,71 +197,71 @@ export default {
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 mardi:{
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 mercredi:{
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 jeudi:{
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 vendredi:{
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 samedi:{
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 dimanche:{
                     open:false,
                     hours:[
 
-                    ]
+                    ],
+                    open_dial:false,
                 },
                 selected:String,
+                open:String,
+                close:String
             }
         }
     },
     methods: {
         setValueClock(posi,payload){
-            var open_pay = '', close_pay = '';
-            var object = {
-                open:open_pay,
-                close:close_pay
-            }
-            var size_ele = this.days[this.days.selected].hours.length;
-            if (size_ele != 0) {
-                size_ele--;
-            }
             if (posi == 0) {
-                object.open = payload   
-                if (this.days[this.days.selected].hours[size_ele].close != undefined) {
-                    object.close = this.days[this.days.selected].hours[size_ele].close
-                }
+                this.days.open = payload                
             } else {
-                object.close = payload
-                if (this.days[this.days.selected].hours[size_ele].open != undefined) {
-                    object.open = this.days[this.days.selected].hours[size_ele].open
-                }                
+                this.days.close = payload                
             }
-          
+        },
+        checkDial(){
+            if (this.days.open != String && this.days.close != String) {
+                this.days[this.days.selected].hours.push({open:this.days.open,close:this.days.close})
+                this.days.open = String;
+                this.days.close = String;
+            }
         }
     },
 }
